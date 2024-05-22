@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="ru">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Заявки - Строительная компания</title>
+        <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+        <style>
+            body {
+                padding-top: 56px;
+            }
+            .navbar-nav .nav-link {
+                color: white !important;
+            }
+            .result-section {
+                margin-top: 20px;
+            }
+        </style>
+    </head>
+    <body>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+            <div class="container">
+                <a class="navbar-brand" href="index.html">Строительная компания</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarResponsive">
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="index.html">Услуги</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="about.html">О нас</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="contact.html">Контакты</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="feedback.html">Обратная связь</a>
+                        </li>
+                        <li class="nav-item active">
+                            <a class="nav-link" href="requests.html">Заявки</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <div class="container mt-5">
+            <h1 class="mt-5">Заявки</h1>
+
+            <div class="result-section mt-5">
+                <h2>Все заявки</h2>
+                <table class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <th>Имя</th>
+                        <th>Email</th>
+                        <th>Тема</th>
+                        <th>Сообщение</th>
+                        <th>Дата</th>
+                    </tr>
+                    </thead>
+                    <tbody id="requestsTableBody">
+                    <!-- Данные будут добавляться здесь -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <footer class="py-5 bg-dark">
+            <div class="container">
+                <p class="m-0 text-center text-white">© 2023 Строительная компания. Все права защищены.</p>
+            </div>
+        </footer>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                fetch('/feedback', {
+                    method: 'GET'
+                }).then(response => response.json())
+                    .then(data => {
+                        const tableBody = document.getElementById('requestsTableBody');
+                        data.forEach(feedback => {
+                            const newRow = tableBody.insertRow();
+                            newRow.insertCell(0).textContent = feedback.name;
+                            newRow.insertCell(1).textContent = feedback.email;
+                            newRow.insertCell(2).textContent = feedback.subject;
+                            newRow.insertCell(3).textContent = feedback.message;
+                            newRow.insertCell(4).textContent = feedback.date;
+                        });
+                    }).catch((error) => {
+                    console.error('Error:', error);
+                });
+            });
+        </script>
+    </body>
+</html>
+

@@ -18,7 +18,7 @@ public class FeedBackFormServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String name = request.getParameter("name");
         String email = request.getParameter("email");
-        String theme = request.getParameter("theme");
+        String subject = request.getParameter("subject");
         String message = request.getParameter("message");
 //        String date = request.getParameter("date"); //fdf
         LocalDate date = LocalDate.now();
@@ -26,7 +26,7 @@ public class FeedBackFormServlet {
         JSONObject feedback = new JSONObject();
         feedback.put("name", name);
         feedback.put("email", email);
-        feedback.put("theme", theme);
+        feedback.put("subject", subject);
         feedback.put("message", message);
         feedback.put("date", date.toString());
 
