@@ -1,28 +1,32 @@
 package com.example.servlet;
 
-import java.io.*;
-import java.time.LocalDate;
-
 import jakarta.servlet.ServletException;
-import jakarta.servlet.http.*;
-import jakarta.servlet.annotation.*;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
-@WebServlet(name = "feedback", value = "/feedback")
-public class FeedBackFormServlet {
+import java.io.*;
+import java.time.LocalDate;
+
+@WebServlet(name = "FeedBackFormServlet", urlPatterns = {"/feedback"})
+public class FeedBackFormServlet extends HttpServlet {
     private static final String filePath = "requests.json";
 
+    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        // Получение параметров формы
         String name = request.getParameter("name");
         String email = request.getParameter("email");
         String subject = request.getParameter("subject");
         String message = request.getParameter("message");
-//        String date = request.getParameter("date"); //fdf
         LocalDate date = LocalDate.now();
 
+        // Создание JSON объекта для отзыва
         JSONObject feedback = new JSONObject();
         feedback.put("name", name);
         feedback.put("email", email);
@@ -32,27 +36,35 @@ public class FeedBackFormServlet {
 
         JSONArray feedbackList = new JSONArray();
 
-        try {
-            JSONParser parser = new JSONParser();
-            File file = new File(filePath);
-            String fullPath = file.getAbsolutePath();
-            System.out.println(fullPath);
-            if (file.exists()) {
-                feedbackList = (JSONArray) parser.parse(new FileReader(filePath));
+        // Чтение существующих отзывов из файла
+        File file = new File(filePath);
+        if (file.exists()) {
+            try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+                JSONParser parser = new JSONParser();
+                Object obj = parser.parse(reader);
+                if (obj instanceof JSONArray) {
+                    feedbackList = (JSONArray) obj;
+                }
+            } catch (IOException | ParseException e) {
+                e.printStackTrace();
             }
-            feedbackList.add(feedback);
-            System.out.println("Feedback List: " + feedbackList);
-            FileWriter fileWriter = new FileWriter(filePath);
+        }
 
-            fileWriter.write(feedbackList.toJSONString());
-            fileWriter.close();
-        } catch (IOException | ParseException e) {
+        // Добавление нового отзыва в список
+        feedbackList.add(feedback);
+        System.out.println(feedbackList);
+
+        // Запись обновленного списка отзывов обратно в файл
+        try (FileWriter fileWriter = new FileWriter(filePath)) {
+            fileWriter.write(feedbackList.toString());
+        } catch (IOException e) {
             e.printStackTrace();
         }
-//        response.sendRedirect("feedback.html");
+        response.sendRedirect("feedback.html");
     }
 
-    public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.sendRedirect("feedback.html");
     }
 }
