@@ -21,14 +21,14 @@
     <body>
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
             <div class="container">
-                <a class="navbar-brand" href="index.html">Строительная компания</a>
+                <a class="navbar-brand" href="index">Строительная компания</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarResponsive">
                     <ul class="navbar-nav ml-auto">
                         <li class="nav-item">
-                            <a class="nav-link" href="index">Услуги</a>
+                            <a class="nav-link" href="services">Услуги</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="about">О нас</a>
@@ -76,26 +76,6 @@
             </div>
         </footer>
 
-        <script>
-            document.addEventListener('DOMContentLoaded', function() {
-                fetch('/requests', {
-                    method: 'GET'
-                }).then(response => response.json())
-                    .then(data => {
-                        const tableBody = document.getElementById('requestsTableBody');
-                        data.forEach(feedback => {
-                            const newRow = tableBody.insertRow();
-                            newRow.insertCell(0).textContent = feedback.name;
-                            newRow.insertCell(1).textContent = feedback.email;
-                            newRow.insertCell(2).textContent = feedback.subject;
-                            newRow.insertCell(3).textContent = feedback.message;
-                            newRow.insertCell(4).textContent = feedback.date;
-                        });
-                    }).catch((error) => {
-                    console.error('Error:', error);
-                });
-            });
-        </script>
     </body>
 </html>
 

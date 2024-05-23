@@ -19,14 +19,12 @@ public class FeedBackFormServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // Получение параметров формы
         String name = request.getParameter("name");
         String email = request.getParameter("email");
         String subject = request.getParameter("subject");
         String message = request.getParameter("message");
         LocalDate date = LocalDate.now();
 
-        // Создание JSON объекта для отзыва
         JSONObject feedback = new JSONObject();
         feedback.put("name", name);
         feedback.put("email", email);
@@ -36,7 +34,6 @@ public class FeedBackFormServlet extends HttpServlet {
 
         JSONArray feedbackList = new JSONArray();
 
-        // Чтение существующих отзывов из файла
         File file = new File(filePath);
         if (file.exists()) {
             try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
@@ -50,11 +47,9 @@ public class FeedBackFormServlet extends HttpServlet {
             }
         }
 
-        // Добавление нового отзыва в список
         feedbackList.add(feedback);
         System.out.println(feedbackList);
 
-        // Запись обновленного списка отзывов обратно в файл
         try (FileWriter fileWriter = new FileWriter(filePath)) {
             fileWriter.write(feedbackList.toString());
         } catch (IOException e) {
