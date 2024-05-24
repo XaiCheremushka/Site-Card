@@ -21,40 +21,15 @@ public class FeedBackFormServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String name = request.getParameter("name");
         String email = request.getParameter("email");
-        String subject = request.getParameter("subject");
+        String theme = request.getParameter("theme");
         String message = request.getParameter("message");
-        LocalDate date = LocalDate.now();
+        String date = LocalDate.now().toString();
 
-        JSONObject feedback = new JSONObject();
-        feedback.put("name", name);
-        feedback.put("email", email);
-        feedback.put("subject", subject);
-        feedback.put("message", message);
-        feedback.put("date", date.toString());
+        DataRequests requests = new DataRequests(name, email, theme, message, date);
 
         JSONArray feedbackList = new JSONArray();
-
-        File file = new File(filePath);
-        if (file.exists()) {
-            try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
-                JSONParser parser = new JSONParser();
-                Object obj = parser.parse(reader);
-                if (obj instanceof JSONArray) {
-                    feedbackList = (JSONArray) obj;
-                }
-            } catch (IOException | ParseException e) {
-                e.printStackTrace();
-            }
-        }
-
-        feedbackList.add(feedback);
-        System.out.println(feedbackList);
-
-        try (FileWriter fileWriter = new FileWriter(filePath)) {
-            fileWriter.write(feedbackList.toString());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        feedbackList.add(requests.toJSON());
+        WorkWithJSON.setDataToJSON(filePath, feedbackList);
         response.sendRedirect("feedback.html");
     }
 
