@@ -6,9 +6,6 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 
 import java.io.*;
 import java.time.LocalDate;
@@ -27,7 +24,7 @@ public class FeedBackFormServlet extends HttpServlet {
 
         DataRequests requests = new DataRequests(name, email, theme, message, date);
 
-        JSONArray feedbackList = new JSONArray();
+        JSONArray feedbackList = WorkWithJSON.getDataFromJSON(filePath);
         feedbackList.add(requests.toJSON());
         WorkWithJSON.setDataToJSON(filePath, feedbackList);
         response.sendRedirect("feedback.html");

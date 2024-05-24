@@ -7,11 +7,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 
-import javax.xml.crypto.Data;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 
