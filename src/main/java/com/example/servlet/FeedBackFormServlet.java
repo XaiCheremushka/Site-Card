@@ -12,7 +12,7 @@ import java.time.LocalDate;
 
 @WebServlet(name = "FeedBackFormServlet", urlPatterns = {"/feedback"})
 public class FeedBackFormServlet extends HttpServlet {
-    private static final String filePath = "requests.json";
+//    private static final String filePath = "requests.json";
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -22,11 +22,13 @@ public class FeedBackFormServlet extends HttpServlet {
         String message = request.getParameter("message");
         String date = LocalDate.now().toString();
 
-        DataRequests requests = new DataRequests(name, email, theme, message, date);
+        WorkWithDatabase.create(name, email, theme, message, date);
 
-        JSONArray feedbackList = WorkWithJSON.getDataFromJSON(filePath);
-        feedbackList.add(requests.toJSON());
-        WorkWithJSON.setDataToJSON(filePath, feedbackList);
+//        DataRequests requests = new DataRequests(name, email, theme, message, date);
+//
+//        JSONArray feedbackList = WorkWithJSON.getDataFromJSON(filePath);
+//        feedbackList.add(requests.toJSON());
+//        WorkWithJSON.setDataToJSON(filePath, feedbackList);
         response.sendRedirect("feedback.html");
     }
 
